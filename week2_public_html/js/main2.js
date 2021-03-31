@@ -14,7 +14,7 @@ const createCatCards = (cats) => {
   cats.forEach((cat) => {
     // create li with DOM methods
     const img = document.createElement('img');
-    img.src = url + '/' + cat.filename;
+    img.src = url + '/uploads/' + cat.filename;
     img.alt = cat.name;
     img.classList.add('resp');
 
@@ -40,7 +40,7 @@ const createCatCards = (cats) => {
       inputs[0].value = cat.name;
       inputs[1].value = cat.age;
       inputs[2].value = cat.weight;
-      inputs[3].value = cat.cat_id;
+      inputs[3].value = cat.id;
       modForm.querySelector('select').value = cat.owner;
     });
 
@@ -52,7 +52,7 @@ const createCatCards = (cats) => {
         method: 'DELETE',
       };
       try {
-        const response = await fetch(url + '/cat/' + cat.cat_id, fetchOptions);
+        const response = await fetch(url + '/cat/' + cat.id, fetchOptions);
         const json = await response.json();
         console.log('delete response', json);
         getCat();
@@ -97,7 +97,7 @@ const createUserOptions = (users) => {
     users.forEach((user) => {
       // create options with DOM methods
       const option = document.createElement('option');
-      option.value = user.user_id;
+      option.value = user.id;
       option.innerHTML = user.name;
       option.classList.add('light-border');
       list.appendChild(option);
@@ -138,20 +138,15 @@ modForm.addEventListener('submit', async (evt) => {
   const data = serializeJson(modForm);
   const fetchOptions = {
     method: 'PUT', // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors', // no-cors, *cors, same-origin
-    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: 'same-origin', // include, *same-origin, omit
     headers: {
       'Content-Type': 'application/json',
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
-    redirect: 'follow', // manual, *follow, error
-    referrer: 'no-referrer', // no-referrer, *client
     body: JSON.stringify(data), // body data type must match "Content-Type" header
   };
 
   console.log(fetchOptions);
-  const response = await fetch(url + '/cat', fetchOptions);
+  const response = await fetch(url + '/cat/' + data.id, fetchOptions);
   const json = await response.json();
   console.log('modify response', json);
   getCat();

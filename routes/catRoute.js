@@ -1,21 +1,46 @@
-//'use strict'; module is strict by default 😉
+'use strict';
+// catRoute
 const express = require('express');
-const router = express.Router();
+const multer  = require('multer');
 const catController = require('../controllers/catController');
+const router = express.Router();
+const upload = multer({ dest: 'uploads' });
+const {body, validationResult} = require('express-validator');
 
-router.route('/')
-.get(catController.cat_list_get)
-.post(catController.cat_add);
-
-router.route('/:id')
-.get(catController.cat_get_by_id)
-.put((req, res) => {
-  console.log('put cat', req.params);
-  res.send('put cat');
-})
-.delete((req, res) => {
-  console.log('delete cat', req.params);
-  res.send('delete cat');
+router.get('/', catController.cat_list_get);
+router.post('/', upload.single('cat'),  body('name').notEmpty().trim().escape(),
+    body('age').notEmpty().isNumeric().trim().escape(),
+    body('weight').notEmpty().isNumeric().trim().escape(),
+    body('owner').notEmpty(),
+    body('cat').custom((value, {req}) => {
+      console.log(req.file.mimetype.startsWith("image/"));
+      if(req.file.mimetype.startsWith("image/")){
+        return "image/*";
+      } else {
+        return false;
+      }
+    }),
+    (req, res) => {
+      const errors = validationResult(req);
+      if(!errors.isEmpty()){
+        return res.status(400).json({errors: errors.array()})
+      }
+      catController.cat_create(req, res);
 });
+
+router.get('/:id', catController.cat_get_by_id);
+router.put('/:id', body('name').notEmpty().trim().escape(),
+    body('age').notEmpty().isNumeric().trim().escape(),
+    body('weight').notEmpty().isNumeric().trim().escape(),
+    body('owner').notEmpty(),
+    (req, res) => {
+      const errors = validationResult(req);
+      if(!errors.isEmpty()){
+        return res.status(400).json({errors: errors.array()})
+      }
+      console.log(req.body.owner);
+      catController.cat_update(req, res);
+    });
+router.delete('/:id', catController.cat_delete);
 
 module.exports = router;
