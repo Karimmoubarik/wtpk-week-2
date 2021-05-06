@@ -16,7 +16,7 @@ router.post('/register', body('name').isLength({min: 3}).notEmpty().trim().escap
         return res.status(400).json({errors: errors.array()})
       }
 
-      const salt = bcrypt.genSaltSync(12);
+  //    const salt = bcrypt.genSaltSync(12);
 //      user['password'] = bcrypt.hashSync(req.body.password, salt);
 //      userController.user_create(req, res);
     });
