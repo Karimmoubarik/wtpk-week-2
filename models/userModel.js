@@ -36,7 +36,7 @@ const getUserLogin = async (params) => {
 const insertUser = async (req) => {
   try {
     const [rows] = await promisePool.query('INSERT INTO wop_user (name, email, password) VALUES (?, ?, ?);',
-        [req.body.name, req.body.email, req.body.password]);
+        [req.body.name, req.body.username, req.body.password]);
     console.log('userModel insert:', rows);
     return rows.insertId;
   } catch (e) {
