@@ -3,7 +3,6 @@ const express = require('express');
 const https = require('https');
 const fs = require('fs');
 const http = require('http');
-const bcrypt = require('bcryptjs');
 const app = express();
 const port = 3000;
 const passport = require('./utils/pass.js');
