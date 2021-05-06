@@ -12,13 +12,13 @@ const userRoute = require('./routes/userRoute');
 const authRoute = require('./routes/authRoute');
 var cors = require('cors');
 
-const sslkey = fs.readFileSync('ssl-key.pem');
+/*const sslkey = fs.readFileSync('ssl-key.pem');
 const sslcert = fs.readFileSync('ssl-cert.pem');
 
 const options = {
   key: sslkey,
   cert: sslcert
-}
+}*/
 
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
