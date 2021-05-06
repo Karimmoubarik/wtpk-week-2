@@ -38,7 +38,7 @@ app.use((req, res, next) =>{
     next();
   } else {
     const proxypath = process.env.PROXY_PASS || '';
-    res.redirect(301, 'https://${req.headers.host}${proxypath}${req.url}');
+    res.redirect(301, `https://${req.headers.host}${proxypath}${req.url}`);
   }
 });
 
