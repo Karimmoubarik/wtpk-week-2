@@ -3,7 +3,8 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
 const userController = require('../controllers/userController');
-const {body, validationResult} = require('express-validator')
+const {body, validationResult} = require('express-validator');
+const bcrypt = require('bcryptjs');
 
 router.post('/login', authController.login);
 router.post('/register', body('name').isLength({min: 3}).notEmpty().trim().escape(),
@@ -14,6 +15,9 @@ router.post('/register', body('name').isLength({min: 3}).notEmpty().trim().escap
       if(!errors.isEmpty()){
         return res.status(400).json({errors: errors.array()})
       }
+
+      const salt = bcrypt.genSaltSync(12);
+      user['password'] = bcrypt.hashSync(req.body.password, salt);
       userController.user_create(req, res);
     });
 
