@@ -7,7 +7,7 @@ const {body, validationResult} = require('express-validator')
 
 router.post('/login', authController.login);
 router.post('/register', body('name').isLength({min: 3}).notEmpty().trim().escape(),
-    body('email').isEmail().trim().escape(),
+    body('username').isEmail().trim().escape(),
     body('password').isLength({min: 8}).matches('(?=.*[A-Z])').trim().escape(),
     (req, res) => {
       const errors = validationResult(req);
