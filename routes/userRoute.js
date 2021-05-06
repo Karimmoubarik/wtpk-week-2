@@ -2,7 +2,6 @@
 // userRoute
 const express = require('express');
 const userController = require('../controllers/userController');
-const {body, validationResult} = require('express-validator')
 const router = express.Router();
 
 router.get('/', userController.user_list_get);

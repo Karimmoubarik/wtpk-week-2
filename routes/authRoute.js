@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
 const userController = require('../controllers/userController');
+const {body, validationResult} = require('express-validator')
 
 router.post('/login', authController.login);
 router.post('/register', body('name').isLength({min: 3}).notEmpty().trim().escape(),
