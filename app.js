@@ -31,9 +31,22 @@ app.use('/auth', authRoute);
 
 //app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
-https.createServer(options, app).listen(8000);
+app.enable('trust proxy');
+
+app.use((req, res, next) =>{
+  if(req.sequre){
+    next();
+  } else {
+    const proxypath = process.env.PROXY_PASS || '';
+    res.redirect(301, 'https://${req.headers.host}${proxypath}${req.url}');
+  }
+});
+
+app.listen(3000);
+
+/*https.createServer(options, app).listen(3000);
 
 http.createServer((req, res) => {
   res.writeHead(301, {'Location': 'https://localhost:8000'+req.url});
   res.end();
-}).listen(3000);
+}).listen(3000);*/
