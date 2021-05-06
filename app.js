@@ -24,6 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(__dirname + "/uploads"));
+app.use(express.static(__dirname + "/week2_public_html"));
 app.use('/cat', passport.authenticate('jwt', {session: false}), catRouter)
 app.use('/', rootRoute)
 app.use('/user', passport.authenticate('jwt', {session: false}), userRoute)
