@@ -34,7 +34,7 @@ app.use('/auth', authRoute);
 app.enable('trust proxy');
 
 app.use((req, res, next) =>{
-  if(req.sequre){
+  if(req.secure){
     next();
   } else {
     const proxypath = process.env.PROXY_PASS || '';
